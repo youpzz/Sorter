@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class PlayerInteraction : MonoBehaviour
 {
-    public static PlayerInteraction instance;
+    public static PlayerInteraction Instance;
     [Header("UI")]
     [SerializeField] private Image holdProgressBar;
     [SerializeField] private TMP_Text interactionText;
@@ -34,7 +34,7 @@ public class PlayerInteraction : MonoBehaviour
 
     void Awake()
     {
-        instance = this;
+        Instance = this;
         itemNameText.gameObject.SetActive(false);
         interactionText.gameObject.SetActive(false);
         interactableCanvasGroup.alpha = 0;
@@ -133,12 +133,16 @@ public class PlayerInteraction : MonoBehaviour
     // --- Interaction ---
     private void Interact(IInteractable interactable)
     {
+        // Защита от повторного осмотра
+        if (ItemViewer.Instance != null && ItemViewer.Instance.isViewing()) return;
+
         interactable.Interact();
         ResetCurrentInteractable();
     }
 
 
-    private void ResetCurrentInteractable()
+
+    public void ResetCurrentInteractable()
     {
         if (currentInteractable == null) return;
 
