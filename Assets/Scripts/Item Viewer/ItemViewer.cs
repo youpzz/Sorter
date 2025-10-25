@@ -16,17 +16,40 @@ public class ItemViewer : MonoBehaviour
         Instance = this;
     }
 
+    void Update()
+    {
+        HandleItemInspection();
+    }
+
     public void ShowItem(ItemPickable itemPickable)
     {
         if (currentItem != null) Destroy(currentItem);
         currentPickable = itemPickable;
         currentItem = Instantiate(itemPickable.GetPrefab(), viewPoint.position, Quaternion.identity);
         currentItem.transform.SetParent(viewPoint);
+        SetCursorVisibility(true);
     }
 
-    void Update()
+    void SetCursorVisibility(bool state)
     {
-        if (currentItem != null && Input.GetMouseButton(0))
+        Cursor.visible = state;
+        Cursor.lockState = state ? CursorLockMode.Confined : CursorLockMode.Locked;
+    }
+
+    void HandleItemInspection()
+    {
+        if (currentItem == null) return;
+
+        if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Escape))
+        {
+            currentPickable.CanView(true);
+            Destroy(currentItem);
+            currentItem = null;
+            currentPickable = null;
+            SetCursorVisibility(false);
+        }
+
+        if (Input.GetMouseButton(0))
         {
             float rotateX = Input.GetAxis("Mouse X") * rotationVelocity.y * Time.deltaTime;
             float rotateY = -Input.GetAxis("Mouse Y") * rotationVelocity.y * Time.deltaTime;
@@ -34,17 +57,9 @@ public class ItemViewer : MonoBehaviour
             currentItem.transform.Rotate(Camera.main.transform.up, rotateX, Space.World);
             currentItem.transform.Rotate(Camera.main.transform.right, rotateY, Space.World);
         }
-        if (currentItem != null)
-        {
-            if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Escape))
-            {
-                currentPickable.CanView(true);
-                Destroy(currentItem);
-                currentItem = null;
-                currentPickable = null;
-            }
-        }
     }
+
+    
 
     public bool isViewing() => currentItem != null;
 }

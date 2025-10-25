@@ -9,7 +9,7 @@ public class ItemPickable : MonoBehaviour, IInteractable
 
     void ShowItem()
     {
-        if (!isViewed)
+        if (!isViewed && !ItemViewer.Instance.isViewing())
         {
             ItemViewer.Instance.ShowItem(this);
             isViewed = true;
