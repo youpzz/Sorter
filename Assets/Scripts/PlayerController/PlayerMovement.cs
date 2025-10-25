@@ -52,7 +52,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        if (!CanMove) return;
+        if (!CanMove || ItemViewer.Instance.isViewing()) return;
         HandleAllMovement();
     }
 
