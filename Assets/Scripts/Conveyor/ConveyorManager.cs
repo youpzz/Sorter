@@ -21,6 +21,10 @@ public class ConveyorManager : MonoBehaviour
     [Space(10)]
 
     [SerializeField] private ItemScriptable currentItem;
+    [SerializeField] private ItemPickable currentPickable;
+
+    [Space(10)]
+    [SerializeField] private Transform spawnPoint;
 
     private ItemScriptable[] itemScriptables;
 
@@ -33,7 +37,7 @@ public class ConveyorManager : MonoBehaviour
 
     void Start()
     {
-        StartCoroutine(waitForCooldown());
+        StartCoroutine(WaitForCooldown());
     }
 
     void LoadItems()
@@ -42,30 +46,48 @@ public class ConveyorManager : MonoBehaviour
         Debug.Log($"Подгружено {itemScriptables.Length} предметов");
     }
 
-    IEnumerator waitForCooldown()
+    IEnumerator WaitForCooldown()
     {
         SpawnItem();
         
-        float timer = spawnTime;
+        float timer = stopTime;
         while (timer > 0)
         {
-            if (timer <= spawnTime - stopTime) conveyorBelt.SwitchPower(false);
             timer -= Time.deltaTime;
             yield return null;
         }
-
-        conveyorBelt.SwitchPower(true);
-
-
+        conveyorBelt.SwitchPower(false);
     }
 
+
+    public void SpawnNewItem() => StartCoroutine(WaitForCooldown());
 
     void SpawnItem()
     {
         ItemScriptable randomItem = itemScriptables[Random.Range(0, itemScriptables.Length)];
         currentItem = randomItem;
-        conveyorSpawner.SpawnItem(randomItem.itemPrefab);
+        currentPickable = Instantiate(randomItem.itemPrefab, spawnPoint.position, Quaternion.identity).GetComponent<ItemPickable>();
     }
+
+    void MakeItemDecicion(bool state)
+    {
+        conveyorDestroyer.ChangeDestroyState(state);
+        StopAllCoroutines();
+        currentPickable.SetViewAbility(false);
+        conveyorBelt.SwitchPower(true);
+        Debug.Log("Нажата кнопка");
+    }
+
+
+    public ItemScriptable GetCurrentItem() => currentItem;
+
+
+    
+    public void ApproveItem(bool state)
+    {
+        MakeItemDecicion(state);
+    }
+
 
     
 }

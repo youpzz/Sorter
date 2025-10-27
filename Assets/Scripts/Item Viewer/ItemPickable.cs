@@ -1,14 +1,19 @@
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class ItemPickable : MonoBehaviour, IInteractable
 {
     [SerializeField] private ItemScriptable scriptable;
+
+    [SerializeField] private List<Damage> damageTypes = new List<Damage>();
+
     private GameObject itemPrefab;
+
     private bool isViewed = false;
-
-
-    bool isInteractable = false;
+    private bool canBeViewed = true;
+    private bool isInteractable = false;
 
     void Start()
     {
@@ -19,13 +24,15 @@ public class ItemPickable : MonoBehaviour, IInteractable
     {
         itemPrefab = scriptable.inspectionPrefab;
         if (GetComponent<Outline>()) GetComponent<Outline>().enabled = false;
+
+        
     }
+    
 
     void ShowItem()
     {
         if (!isViewed && !ItemViewer.Instance.isViewing() && gameObject.activeSelf)
         {
-            Debug.Log("Осмотр предмета");
             ItemViewer.Instance.ShowItem(this);
             isViewed = true;
             gameObject.SetActive(false);
@@ -43,7 +50,9 @@ public class ItemPickable : MonoBehaviour, IInteractable
     }
 
     public void CanView(bool state) => isViewed = !state;
+    public void SetViewAbility(bool state) => canBeViewed = state;
     public GameObject GetPrefab() => itemPrefab;
+    public bool isDamaged() => damageTypes.Count > 0;
 
 
     IEnumerator InteractionCooldown()
@@ -54,7 +63,7 @@ public class ItemPickable : MonoBehaviour, IInteractable
 
         isInteractable = true;
     }
-    
+
 
 
 
@@ -62,7 +71,7 @@ public class ItemPickable : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        if (isInteractable)
+        if (isInteractable && canBeViewed)
         {
             ShowItem();
         }
@@ -75,4 +84,19 @@ public class ItemPickable : MonoBehaviour, IInteractable
     {
         return scriptable.itemName;
     }
+}
+
+
+
+[Serializable]
+public class Damage
+{
+    public DamageType markType;
+    public GameObject markObject;
+    
+}
+
+public enum DamageType
+{
+    NoQR, Spit
 }

@@ -6,15 +6,24 @@ public class ConveyorBelt : MonoBehaviour
     [SerializeField] private bool isWorking = true;
     [SerializeField] private Vector3 direction = Vector3.forward;
 
+    private Rigidbody rb_;
 
 
+
+    void Update()
+    {
+        if (!isWorking) return;
+
+        if (rb_) rb_.linearVelocity = direction.normalized * speed;
+    }
 
     void OnCollisionStay(Collision collision)
     {
         if (!isWorking) return;
 
-        Rigidbody rb = collision.gameObject.GetComponent<Rigidbody>();
-        if (rb) rb.linearVelocity = direction.normalized * speed;
+        rb_ = collision.gameObject.GetComponent<Rigidbody>();
+
+        
     }
 
 

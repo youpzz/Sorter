@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ItemViewer : MonoBehaviour
@@ -8,6 +9,15 @@ public class ItemViewer : MonoBehaviour
     [SerializeField] private Transform viewPoint; // Позиция перед игроком
 
     [SerializeField] private float inspectionMultiplier = 1;
+
+    [Space(10)]
+    [Header("Визуал")]
+
+    [SerializeField] private GameObject violetLight;
+    [SerializeField] private GameObject qrChecker;
+
+
+
     private GameObject currentItem;
     private ItemPickable currentPickable;
     private Vector3 rotationVelocity = new Vector3(0, 200f, 0);
@@ -30,7 +40,9 @@ public class ItemViewer : MonoBehaviour
         currentPickable = itemPickable;
         currentItem = Instantiate(itemPickable.GetPrefab(), viewPoint.position, Quaternion.identity);
         currentItem.transform.SetParent(viewPoint);
+        Debug.Log(currentItem);
         SetCursorVisibility(true);
+        
     }
 
     void SetCursorVisibility(bool state)
@@ -43,7 +55,15 @@ public class ItemViewer : MonoBehaviour
     {
         if (currentItem == null) return;
 
-        if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Escape))
+
+        HandleItemDeEquip();
+        HandleItemRotation();
+    }
+
+
+    void HandleItemDeEquip()
+    {
+        if (Input.GetKeyDown(KeyCode.F) || Input.GetKeyDown(KeyCode.Escape))
         {
             currentPickable.gameObject.SetActive(true);
             currentPickable.CanView(true);
@@ -51,9 +71,12 @@ public class ItemViewer : MonoBehaviour
             currentItem = null;
             currentPickable = null;
             SetCursorVisibility(false);
-            
-        }
 
+        }
+    }
+    
+    void HandleItemRotation()
+    {
         if (Input.GetMouseButton(0))
         {
             if (currentItem == null) return;
