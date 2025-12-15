@@ -20,7 +20,7 @@ public class Sway : MonoBehaviour
 
     private void Update()
     {
-        if (PlayerMovement.Instance.CanMove == false) return;
+        // if (PlayerMovement.Instance.CanMove == false) return;
         Vector2 input = new Vector2(Input.GetAxisRaw("Mouse X"), Input.GetAxisRaw("Mouse Y"));
 
         input.x = Mathf.Clamp(input.x, -this.swayClamp, this.swayClamp);

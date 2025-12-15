@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemPickable : MonoBehaviour, IInteractable
+public class ItemPickable : MonoBehaviour
 {
     [SerializeField] private ItemScriptable scriptable;
 

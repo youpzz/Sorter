@@ -13,7 +13,7 @@ public class ConveyorManager : MonoBehaviour
 
     [Space(10)]
     [Header("Настройки")]
-    [SerializeField] private float spawnTime = 60;
+    // [SerializeField] private float spawnTime = 60;
 
     [SerializeField] private float stopTime = 3;
 
@@ -83,11 +83,8 @@ public class ConveyorManager : MonoBehaviour
 
 
     
-    public void ApproveItem(bool state)
-    {
-        MakeItemDecicion(state);
-    }
+    public void ApproveItem(bool state) => MakeItemDecicion(state);
 
 
-    
+
 }

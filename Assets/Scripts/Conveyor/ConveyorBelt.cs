@@ -22,8 +22,6 @@ public class ConveyorBelt : MonoBehaviour
         if (!isWorking) return;
 
         rb_ = collision.gameObject.GetComponent<Rigidbody>();
-
-        
     }
 
 

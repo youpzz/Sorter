@@ -251,7 +251,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 1562
+  m_VersionIndex: 1571
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -373,6 +373,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scriptable: {fileID: 11400000, guid: a307f3d9b39d6ef48bb8a65e537fcbd5, type: 2}
+  damageTypes:
+  - markType: 1
+    markObject: {fileID: 0}
 --- !u!114 &5891093441425015987
 MonoBehaviour:
   m_ObjectHideFlags: 0

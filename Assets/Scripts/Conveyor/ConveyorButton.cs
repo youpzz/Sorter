@@ -1,20 +1,15 @@
 using UnityEngine;
 
-public class ConveyorButton : MonoBehaviour, IInteractable
+public class ConveyorButton : MonoBehaviour
 {
 
     [SerializeField] private bool isApprove;
 
 
-
     void Use()
     {
         ConveyorManager.Instance.ApproveItem(isApprove);
-
-
     }
-
-
 
 
     public void Interact()
